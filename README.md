@@ -1,0 +1,2 @@
+# Snipe
+Group messaging platform
