@@ -5,8 +5,6 @@
 
 #pragma comment (lib, "ws2_32.lib")
 
-using namespace std;
-
 void main(int argc, char* argv[])
 {
 	WSADATA data;
@@ -14,11 +12,10 @@ void main(int argc, char* argv[])
 	WORD version = MAKEWORD(2, 2);
 
 	// Start WinSock
-	int wsOk = WSAStartup(version, &data);
+	int64_t wsOk = WSAStartup(version, &data);
 	if (wsOk != 0)
 	{
-		// Not ok! Get out quickly
-		cout << "Can't start Winsock! " << wsOk;
+		std::cout << "Can't start Winsock! " << wsOk;
 		return;
 	}
 
@@ -32,13 +29,12 @@ void main(int argc, char* argv[])
 	SOCKET out = socket(AF_INET, SOCK_DGRAM, 0);
 
 	string s(argv[1]);
-	int sendOk = sendto(out, s.c_str(), s.size() + 1, 0, (sockaddr*)&server, sizeof(server));
+	int64_t sendOk = sendto(out, s.c_str(), s.size() + 1, 0, (sockaddr*) &server, sizeof(server));
 
 	if (sendOk == SOCKET_ERROR)
 	{
-		cout << "That didn't work! " << WSAGetLastError() << endl;
+		std::cout << "That didn't work! " << WSAGetLastError() << '\n';;
 	}
-
 
 	closesocket(out);
 	WSACleanup();
