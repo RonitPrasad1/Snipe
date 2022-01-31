@@ -5,8 +5,6 @@
 
 #pragma comment (lib, "ws2_32.lib")
 
-using namespace std;
-
 void main()
 {
 	WSADATA data;
@@ -16,7 +14,7 @@ void main()
 	int wsOk = WSAStartup(version, &data);
 	if (wsOk != 0)
 	{
-		cout << "Can't start WindowSocket! " << wsOk;
+		std::cout << "Can't start WindowSocket! " << wsOk;
 		return;
 	}
 
@@ -28,14 +26,14 @@ void main()
 	serverHint.sin_family = AF_INET; 
 	serverHint.sin_port = htons(54000); 
 
-	if (bind(in, (sockaddr*)&serverHint, sizeof(serverHint)) == SOCKET_ERROR)
+	if (bind(in, (sockaddr*) &serverHint, sizeof(serverHint)) == SOCKET_ERROR)
 	{
-		cout << "Can't bind the Socket! " << WSAGetLastError() << endl;
+		std::cout << "Can't bind the Socket! " << WSAGetLastError() << '\n';
 		return;
 	}
 
 	sockaddr_in client;
-	int clientLength = sizeof(client); //The size of the client information
+	int64_t clientLength = sizeof(client); //The size of the client information
 
 	char Buffer[1024];
 
@@ -45,10 +43,10 @@ void main()
 		ZeroMemory(Buffer, 1024); //Clear the receive buffer
 
 		//Convert message to bytes: Decoding
-		int bytesIn = recvfrom(in, Buffer, 1024, 0, (sockaddr*)&client, &clientLength);
+		int64_t bytesIn = recvfrom(in, Buffer, 1024, 0, (sockaddr*) &client, &clientLength);
 		if (bytesIn == SOCKET_ERROR)
 		{
-			cout << "Error receiving from client " << WSAGetLastError() << endl;
+			std::cout << "Error receiving from client " << WSAGetLastError() << '\n';
 			continue;
 		}
 
@@ -58,7 +56,7 @@ void main()
 		//Convert 4 bytes to a string: Encoding
 		inet_ntop(AF_INET, &client.sin_addr, clientIp, 256);
 
-		cout << "Server is connected: " << clientIp << " : " << Buffer << endl;
+		std::cout << "Server is connected: " << clientIp << " : " << Buffer << '\n';
 	}
 
 	//Close Socket
