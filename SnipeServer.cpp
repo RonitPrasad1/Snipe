@@ -11,7 +11,7 @@ void main()
 	WORD version = MAKEWORD(2, 2);
 
 	//Start WindowSocket:
-	int wsOk = WSAStartup(version, &data);
+	int64_t wsOk = WSAStartup(version, &data);
 	if (wsOk != 0)
 	{
 		std::cout << "Can't start WindowSocket! " << wsOk;
